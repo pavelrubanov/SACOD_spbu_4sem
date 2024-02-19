@@ -11,7 +11,7 @@ OBJ = $(patsubst $(PREF_SRC)%.c, $(PREF_OBJ)%.o, $(SRC))
 $(TARGET) : $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -o $(TARGET)
 
-$(PREF_OBJ)%.o : $(PREF_SRC)%.CC
+$(PREF_OBJ)%.o : $(PREF_SRC)%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean :
