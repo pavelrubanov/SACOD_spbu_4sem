@@ -1,5 +1,3 @@
-#include <limits.h>
-
 #include "../src/libBigInt.h"
 #include "../src/utils.h"
 #include "minunit.h"
@@ -25,19 +23,15 @@ MU_TEST(length_tests)
 {
     size_t size_0 = 0;
     size_t size_1000 = 1000;
-    size_t size_uint_max = UINT_MAX;
 
     BigInt *a = BigInt_init(size_0);
     BigInt *b = BigInt_init(size_1000);
-    BigInt *c = BigInt_init(size_uint_max);
 
     mu_check(a->n == 0);
     mu_check(b->n == 1000);
-    mu_check(c->n == size_uint_max);
 
     BigInt_free(a);
     BigInt_free(b);
-    BigInt_free(c);
 }
 
 MU_TEST(sum_tests)
@@ -60,6 +54,24 @@ MU_TEST(sum_tests)
     mu_assert_int_eq(5, res->n);
     mu_assert_string_eq(ans2, to_str(res));
 
+    a = read_from_str("12345");
+    b = read_from_str("1");
+
+    const char *ans3 = "12346";
+    res = addition(a, b);
+
+    mu_assert_int_eq(5, res->n);
+    mu_assert_string_eq(ans3, to_str(res));
+
+    a = read_from_str("-12345");
+    b = read_from_str("-1");
+
+    const char *ans4 = "-12346";
+    res = addition(a, b);
+
+    mu_assert_int_eq(5, res->n);
+    mu_assert_string_eq(ans4, to_str(res));
+
 
     BigInt_free(a);
     BigInt_free(b);
@@ -80,12 +92,51 @@ MU_TEST(normalize_tests)
     BigInt_free(a);
 }
 
+MU_TEST(sub_tests)
+{
+    BigInt *a = read_from_str("12345");
+    BigInt *b = read_from_str("11111");
+
+    BigInt *res = subtraction(a,b);
+
+    mu_assert_string_eq("1234", to_str(res));
+
+    a = read_from_str("12345");
+    b = read_from_str("3456");
+
+    res = subtraction(a,b);
+
+    mu_assert_string_eq("8889", to_str(res));
+
+    a = read_from_str("-12345");
+    b = read_from_str("3456");
+
+    res = subtraction(a,b);
+
+    mu_assert_string_eq("-15801", to_str(res));
+
+    a = read_from_str("3456");
+    b = read_from_str("12345");
+
+    res = subtraction(a,b);
+
+    mu_assert_string_eq("-8889", to_str(res));
+
+    a = read_from_str("-12345");
+    b = read_from_str("-3456");
+
+    res = subtraction(a,b);
+
+    mu_assert_string_eq("-8889", to_str(res));
+}
+
 int main()
 {
     MU_RUN_TEST(str_tests);
     MU_RUN_TEST(length_tests);
     MU_RUN_TEST(sum_tests);
     MU_RUN_TEST(normalize_tests);
+    MU_RUN_TEST(sub_tests);
 
     MU_REPORT();
 

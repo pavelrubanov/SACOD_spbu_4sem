@@ -27,7 +27,17 @@ BigInt *addition(const BigInt *a, const BigInt *b)
 
         for (int i = 0; i < size; i++)
         {
-            res->digits[i] = a->digits[i] + b->digits[i];
+            char a_dig = 0;
+            char b_dig = 0;
+            if (i < a->n)
+            {
+                a_dig = a->digits[i];
+            }
+            if (i < b->n)
+            {
+                b_dig = b->digits[i];
+            }
+            res->digits[i] = a_dig + b_dig;
         }
 
         int car = 0;
@@ -48,19 +58,78 @@ BigInt *addition(const BigInt *a, const BigInt *b)
     {
         if (a->sign == -1)
         {
-            return subtraction(b,a);
+            return subtraction(b, get_cp_abs(a)); 
         }
         else
         {
-            return (subtraction(a,b));
+            return (subtraction(a, get_cp_abs(b)));
         }
     }
 }
 BigInt *subtraction(const BigInt *a, const BigInt *b)
 {
+    if (a->sign == 1 && b->sign == 1 && is_bigger(a,b) == 1)
+    {
+        BigInt *res = BigInt_init(max_size(a,b));
+        for (int i = 0; i < res->n; i++)
+        {
+            char a_dig = 0;
+            char b_dig = 0;
+            if (i < a->n)
+            {
+                a_dig = a->digits[i];
+            }
+            if (i < b->n)
+            {
+                b_dig = b->digits[i];
+            }
+
+            res->digits[i] = a_dig - b_dig;
+        }
+
+        int car = 0;
+        for (int i = 0; i < res->n; i++)
+        {
+            res->digits[i] -= car;
+            car = 0;
+            if (res->digits[i] < 0)
+            {
+                res->digits[i] += 10;
+                car++;
+            }
+        }
+
+        normalize(res);
+        return res;
+    }
+
+    if (a->sign == 1 && b->sign == 1 && is_bigger(a,b) == 0)
+    {
+        BigInt *res = subtraction(b,a);
+        res->sign = -1;
+        return res;
+    }
+
+    if (a->sign == 1 && b->sign == -1)
+    {
+        return addition(a,get_cp_abs(b));
+    }
+
+    if (a->sign == -1 && b->sign == 1)
+    {
+        BigInt* res = addition(get_cp_abs(a),get_cp_abs(b));
+        res->sign = -1;
+        return res;
+    }
+
+    if (a->sign == -1 && b->sign == -1)
+    {
+        return subtraction(get_cp_abs(b), get_cp_abs(a));
+    }
 }
 BigInt *multiplication(const BigInt *a, const BigInt *b)
 {
+    
 }
 BigInt *division(const BigInt *a, const BigInt *b)
 {
