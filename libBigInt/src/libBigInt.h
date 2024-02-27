@@ -14,11 +14,11 @@ typedef struct
 
 BigInt *BigInt_init(size_t);
 void BigInt_free(BigInt *);
-BigInt *addition(BigInt, BigInt);
-BigInt *subtraction(BigInt, BigInt);
-BigInt *multiplication(BigInt, BigInt);
-BigInt *division(BigInt, BigInt);
-BigInt *modulo(BigInt, BigInt);
+BigInt *addition(const BigInt *, const BigInt *);
+BigInt *subtraction(const BigInt *, const BigInt *);
+BigInt *multiplication(const BigInt *, const BigInt *);
+BigInt *division(const BigInt *, const BigInt *);
+BigInt *modulo(const BigInt *, const BigInt *);
 BigInt *read_from_str(char *);
 char *to_str(const BigInt *);
 
