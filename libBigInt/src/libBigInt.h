@@ -1,20 +1,23 @@
 #ifndef libBigInt_H
 #define libBigInt_H
 
-#include <string.h>
+typedef struct
+{
+    char *digits;
+    unsigned int n;
+    char sign;
+} BigInt;
 
-struct BigInt {
-    char* digits;
-    int n;
-    char sign; // 1 = +, 0 = -
-};
+BigInt *BigInt_init(int);
+void BigInt_free(BigInt *);
+BigInt *addition(BigInt, BigInt);
+BigInt *subtraction(BigInt, BigInt);
+BigInt *multiplication(BigInt, BigInt);
+BigInt *division(BigInt, BigInt);
+BigInt *modulo(BigInt, BigInt);
+BigInt *read_from_str(char *);
+char *to_str(BigInt);
+void print_BigInt(BigInt *);
+char *strrev(char *);
 
-void addition (struct BigInt, struct BigInt, struct BigInt*);
-void subtraction (struct BigInt, struct BigInt, struct BigInt*);
-void multiplication (struct BigInt, struct BigInt, struct BigInt*);
-void division (struct BigInt, struct BigInt, struct BigInt*);
-void modulo (struct BigInt, struct BigInt, struct BigInt*);
-void read_from_str(char*, struct BigInt*);
-
-
-#endif 
+#endif
