@@ -8,8 +8,8 @@
 `make`
 
 ### Для запуска тестов:
-`make test`
-`./test`
+1) `make test`
+2) `./test`
 
 ### Очистка:
 `make clean`
