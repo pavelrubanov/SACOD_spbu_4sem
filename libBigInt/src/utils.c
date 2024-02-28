@@ -15,6 +15,10 @@ void normalize(BigInt * num)
     }
 
     num->digits = realloc(num->digits, sizeof(char) * new_len);
+    if (num->n == 0)
+    {
+        num->sign = 0;
+    }
 
 }
 size_t max_size(const BigInt *a, const BigInt *b)
