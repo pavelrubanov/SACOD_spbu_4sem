@@ -7,8 +7,14 @@ BigInt *BigInt_init(size_t size)
     BigInt *num = malloc(sizeof(BigInt));
     if (num)
     {
-        num->digits = malloc(sizeof(char) * size);
+        num->digits = malloc(sizeof(char) * (size + 1));
         num->n = size;
+        num->sign = 0;
+        for (int i = 0; i < size; i++)
+        {
+            num->digits[i] = 0;
+        }
+        num->digits[size] = '\0';
     }
     return num;
 }
@@ -130,6 +136,9 @@ BigInt *subtraction(const BigInt *a, const BigInt *b)
 BigInt *multiplication(const BigInt *a, const BigInt *b)
 {
     BigInt *res = BigInt_init(a->n + b->n);
+    test(a);
+    test(b);
+    test(res);
     char car = 0;
     for (int i = 0; i < a->n; i++)
     {
@@ -140,15 +149,19 @@ BigInt *multiplication(const BigInt *a, const BigInt *b)
             res->digits[i + j] %= 10;
         }
     }
+    test(res);
     normalize(res);
     res->sign = a->sign * b->sign;
+    test(res);
     return res;
 }
 BigInt *division(const BigInt *a, const BigInt *b)
 {
+
 }
 BigInt *modulo(const BigInt *a, const BigInt *b)
 {
+    return subtraction(a, multiplication(division(a,b),b));
 }
 BigInt *read_from_str(char *str)
 {

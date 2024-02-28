@@ -72,9 +72,9 @@ MU_TEST(sum_tests)
     mu_assert_int_eq(5, res->n);
     mu_assert_string_eq(ans4, to_str(res));
 
-
     BigInt_free(a);
     BigInt_free(b);
+    BigInt_free(res);
 }
 
 MU_TEST(normalize_tests)
@@ -97,35 +97,39 @@ MU_TEST(sub_tests)
     BigInt *a = read_from_str("12345");
     BigInt *b = read_from_str("11111");
 
-    BigInt *res = subtraction(a,b);
+    BigInt *res = subtraction(a, b);
     mu_assert_string_eq("1234", to_str(res));
 
     a = read_from_str("12345");
     b = read_from_str("3456");
 
-    res = subtraction(a,b);
+    res = subtraction(a, b);
     mu_assert_string_eq("8889", to_str(res));
 
     a = read_from_str("-12345");
     b = read_from_str("3456");
 
-    res = subtraction(a,b);
+    res = subtraction(a, b);
     mu_assert_string_eq("-15801", to_str(res));
 
     a = read_from_str("3456");
     b = read_from_str("12345");
 
-    mu_assert_int_eq(0, is_bigger(a,b));
+    mu_assert_int_eq(0, is_bigger(a, b));
 
-    res = subtraction(a,b);
+    res = subtraction(a, b);
 
     mu_assert_string_eq("-8889", to_str(res));
 
     a = read_from_str("-12345");
     b = read_from_str("-3456");
 
-    res = subtraction(a,b);
+    res = subtraction(a, b);
     mu_assert_string_eq("-8889", to_str(res));
+
+    BigInt_free(a);
+    BigInt_free(b);
+    BigInt_free(res);
 }
 
 MU_TEST(mult_tests)
@@ -134,19 +138,50 @@ MU_TEST(mult_tests)
 
     a = read_from_str("12345");
     b = read_from_str("123");
-    res = multiplication(a,b);
+    res = multiplication(a, b);
     mu_assert_string_eq("1518435", to_str(res));
 
     a = read_from_str("-12345");
     b = read_from_str("123");
-    res = multiplication(a,b);
+    res = multiplication(a, b);
     mu_assert_string_eq("-1518435", to_str(res));
 
     a = read_from_str("-12345");
     b = read_from_str("-123");
-    res = multiplication(a,b);
+    res = multiplication(a, b);
     mu_assert_string_eq("1518435", to_str(res));
+
+    BigInt_free(a);
+    BigInt_free(b);
+    BigInt_free(res);
 }
+
+MU_TEST(division_tests)
+{
+    BigInt *a, *b, *res;
+
+    a = read_from_str("12345");
+    b = read_from_str("11111");
+    res = division(a, b);
+    mu_assert_string_eq("1", to_str(res));
+
+    a = read_from_str("-12345");
+    b = read_from_str("11111");
+    res = division(a, b);
+    mu_assert_string_eq("-1", to_str(res));
+
+    a = read_from_str("-12345");
+    b = read_from_str("-11111");
+    res = division(a, b);
+    mu_assert_string_eq("1", to_str(res));
+
+
+
+    BigInt_free(a);
+    BigInt_free(b);
+    BigInt_free(res);
+}
+
 int main()
 {
     MU_RUN_TEST(str_tests);
@@ -163,8 +198,12 @@ int main()
 
 void test(BigInt *a)
 {
-    printf("n: %ld\n", a->n);
+    printf("\nn: %ld\n", a->n);
     printf("sign: %d\n", a->sign);
     printf("strlen: %ld\n", strlen(a->digits));
-    printf("to_str: %s\n", to_str(a));
+    for(int i = 0; i < a->n; i++)
+    {
+        printf("%d ", a->digits[i]);
+    }
+    printf("\nto_str: %s\n", to_str(a));
 }

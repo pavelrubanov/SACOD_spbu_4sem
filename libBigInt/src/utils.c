@@ -14,7 +14,8 @@ void normalize(BigInt *num)
         num->sign = 0;
     }
 
-    num->digits = realloc(num->digits, sizeof(char) * new_len);
+    num->digits = realloc(num->digits, sizeof(char) * (new_len + 1));
+    num->digits[new_len] = '\0';
     if (num->n == 0)
     {
         num->sign = 0;

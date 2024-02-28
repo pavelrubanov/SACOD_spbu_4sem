@@ -6,8 +6,6 @@
 char *strrev(char *str);
 void normalize(BigInt *);
 int is_zero(const BigInt *);
-BigInt *max_bigInt(const BigInt *, const, BigInt *);
-BigInt *min_bigInt(const BigInt *, const BigInt *);
 size_t max_size(const BigInt *, const BigInt *);
 BigInt *get_cp_abs(const BigInt *);
 BigInt *get_cp_opposite(const BigInt *);
