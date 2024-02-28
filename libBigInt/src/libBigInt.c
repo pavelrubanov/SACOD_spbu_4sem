@@ -58,7 +58,7 @@ BigInt *addition(const BigInt *a, const BigInt *b)
     {
         if (a->sign == -1)
         {
-            return subtraction(b, get_cp_abs(a)); 
+            return subtraction(b, get_cp_abs(a));
         }
         else
         {
@@ -68,9 +68,9 @@ BigInt *addition(const BigInt *a, const BigInt *b)
 }
 BigInt *subtraction(const BigInt *a, const BigInt *b)
 {
-    if (a->sign == 1 && b->sign == 1 && is_bigger(a,b) == 1)
+    if (a->sign == 1 && b->sign == 1 && is_bigger(a, b) == 1)
     {
-        BigInt *res = BigInt_init(max_size(a,b));
+        BigInt *res = BigInt_init(max_size(a, b));
         for (int i = 0; i < res->n; i++)
         {
             char a_dig = 0;
@@ -103,21 +103,21 @@ BigInt *subtraction(const BigInt *a, const BigInt *b)
         return res;
     }
 
-    if (a->sign == 1 && b->sign == 1 && is_bigger(a,b) == 0)
+    if (a->sign == 1 && b->sign == 1 && is_bigger(a, b) == 0)
     {
-        BigInt *res = subtraction(b,a);
+        BigInt *res = subtraction(b, a);
         res->sign = -1;
         return res;
     }
 
     if (a->sign == 1 && b->sign == -1)
     {
-        return addition(a,get_cp_abs(b));
+        return addition(a, get_cp_abs(b));
     }
 
     if (a->sign == -1 && b->sign == 1)
     {
-        BigInt* res = addition(get_cp_abs(a),get_cp_abs(b));
+        BigInt *res = addition(get_cp_abs(a), get_cp_abs(b));
         res->sign = -1;
         return res;
     }
@@ -129,7 +129,20 @@ BigInt *subtraction(const BigInt *a, const BigInt *b)
 }
 BigInt *multiplication(const BigInt *a, const BigInt *b)
 {
-    
+    BigInt *res = BigInt_init(a->n + b->n);
+    char car = 0;
+    for (int i = 0; i < a->n; i++)
+    {
+        for (int j = 0; j < b->n; j++)
+        {
+            res->digits[i + j] += a->digits[i] * b->digits[j] + car;
+            car = res->digits[i + j] / 10;
+            res->digits[i + j] %= 10;
+        }
+    }
+    normalize(res);
+    res->sign = a->sign * b->sign;
+    return res;
 }
 BigInt *division(const BigInt *a, const BigInt *b)
 {
@@ -139,7 +152,7 @@ BigInt *modulo(const BigInt *a, const BigInt *b)
 }
 BigInt *read_from_str(char *str)
 {
-    BigInt *result;
+    BigInt *res;
     size_t size = strlen(str);
     size_t last_el = size;
     char sign;
@@ -153,18 +166,18 @@ BigInt *read_from_str(char *str)
         sign = 1;
     }
 
-    result = BigInt_init(size);
-    result->sign = sign;
-    result->n = size;
-
-    for (int i = 0; i < result->n; i++)
+    res = BigInt_init(size);
+    res->sign = sign;
+    res->n = size;
+    //TODO realloc
+    for (int i = 0; i < res->n; i++)
     {
-        result->digits[i] = str[last_el - 1 - i] - '0';
+        res->digits[i] = str[last_el - 1 - i] - '0';
     }
 
-    result->digits[result->n] = '\0';
-
-    return result;
+    res->digits[res->n] = '\0';
+    normalize(res);
+    return res;
 }
 char *to_str(const BigInt *a)
 {

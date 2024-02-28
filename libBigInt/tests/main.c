@@ -128,6 +128,25 @@ MU_TEST(sub_tests)
     mu_assert_string_eq("-8889", to_str(res));
 }
 
+MU_TEST(mult_tests)
+{
+    BigInt *a, *b, *res;
+
+    a = read_from_str("12345");
+    b = read_from_str("123");
+    res = multiplication(a,b);
+    mu_assert_string_eq("1518435", to_str(res));
+
+    a = read_from_str("-12345");
+    b = read_from_str("123");
+    res = multiplication(a,b);
+    mu_assert_string_eq("-1518435", to_str(res));
+
+    a = read_from_str("-12345");
+    b = read_from_str("-123");
+    res = multiplication(a,b);
+    mu_assert_string_eq("1518435", to_str(res));
+}
 int main()
 {
     MU_RUN_TEST(str_tests);
@@ -135,6 +154,7 @@ int main()
     MU_RUN_TEST(sum_tests);
     MU_RUN_TEST(normalize_tests);
     MU_RUN_TEST(sub_tests);
+    MU_RUN_TEST(mult_tests);
 
     MU_REPORT();
 
