@@ -98,25 +98,24 @@ MU_TEST(sub_tests)
     BigInt *b = read_from_str("11111");
 
     BigInt *res = subtraction(a,b);
-
     mu_assert_string_eq("1234", to_str(res));
 
     a = read_from_str("12345");
     b = read_from_str("3456");
 
     res = subtraction(a,b);
-
     mu_assert_string_eq("8889", to_str(res));
 
     a = read_from_str("-12345");
     b = read_from_str("3456");
 
     res = subtraction(a,b);
-
     mu_assert_string_eq("-15801", to_str(res));
 
     a = read_from_str("3456");
     b = read_from_str("12345");
+
+    mu_assert_int_eq(0, is_bigger(a,b));
 
     res = subtraction(a,b);
 
@@ -126,7 +125,6 @@ MU_TEST(sub_tests)
     b = read_from_str("-3456");
 
     res = subtraction(a,b);
-
     mu_assert_string_eq("-8889", to_str(res));
 }
 
