@@ -16,10 +16,10 @@ void normalize(BigInt *num)
 
     num->digits = realloc(num->digits, sizeof(char) * (new_len + 1));
     num->digits[new_len] = '\0';
-    if (num->n == 0)
-    {
-        num->sign = 0;
-    }
+}
+BigInt *zero()
+{
+    return BigInt_init(0);
 }
 size_t max_size(const BigInt *a, const BigInt *b)
 {
@@ -38,10 +38,11 @@ BigInt *get_cp_abs(const BigInt *a)
     res->sign = 1;
     return res;
 }
-BigInt *get_cp_opposite(const BigInt *a)
+
+BigInt *get_cp(const BigInt *a)
 {
-    BigInt *res = get_cp_abs(a);
-    res->sign = a->sign * (-1);
+    BigInt *res = read_from_str(to_str(a));
+    return res;
 }
 int is_bigger(const BigInt *a, const BigInt *b)
 {
@@ -53,13 +54,20 @@ int is_bigger(const BigInt *a, const BigInt *b)
     {
         return 0;
     }
-    size_t len = a->n;
-    for (int i = len - 1; i >= 0; i--)
+    for (int i = a->n - 1; i >= 0; i--)
     {
+        if (a->digits[i] > b->digits[i])
+        {
+            return 1;
+        }
         if (a->digits[i] < b->digits[i])
         {
             return 0;
         }
     }
     return 1;
+}
+int equals(const BigInt *a, const BigInt *b)
+{
+    return strcmp(to_str(a), to_str(b));
 }

@@ -34,6 +34,56 @@ MU_TEST(length_tests)
     BigInt_free(b);
 }
 
+MU_TEST(normalize_tests)
+{
+    BigInt *a = read_from_str("0000123");
+    normalize(a);
+    mu_assert_int_eq(3, a->n);
+    mu_assert_string_eq("123", to_str(a));
+
+    a = read_from_str("-0000123");
+    normalize(a);
+    mu_assert_int_eq(3, a->n);
+    mu_assert_string_eq("-123", to_str(a));
+
+    BigInt_free(a);
+}
+
+MU_TEST(read_from_int_tests)
+{
+    BigInt *a;
+
+    a = read_from_int(12345);
+    mu_assert_string_eq("12345", to_str(a));
+    mu_assert_int_eq(1, a->sign);
+
+    a = read_from_int(-12345);
+    mu_assert_string_eq("-12345", to_str(a));
+    mu_assert_int_eq(-1, a->sign);
+
+    a = read_from_int(0);
+    mu_assert_string_eq("0", to_str(a));
+    mu_assert_int_eq(0, a->sign);
+
+    BigInt_free(a);
+}
+
+MU_TEST(to_int_tests)
+{
+    BigInt *a;
+
+    a = read_from_str("12345");
+    mu_assert_int_eq(12345, to_int(a));
+
+    a = read_from_str("-12345");
+    mu_assert_int_eq(-12345, to_int(a));
+
+    a = read_from_str("0");
+    mu_assert_int_eq(0, to_int(a));
+
+    BigInt_free(a);
+}
+
 MU_TEST(sum_tests)
 {
     BigInt *a = read_from_str("12345");
@@ -75,21 +125,6 @@ MU_TEST(sum_tests)
     BigInt_free(a);
     BigInt_free(b);
     BigInt_free(res);
-}
-
-MU_TEST(normalize_tests)
-{
-    BigInt *a = read_from_str("0000123");
-    normalize(a);
-    mu_assert_int_eq(3, a->n);
-    mu_assert_string_eq("123", to_str(a));
-
-    a = read_from_str("-0000123");
-    normalize(a);
-    mu_assert_int_eq(3, a->n);
-    mu_assert_string_eq("-123", to_str(a));
-
-    BigInt_free(a);
 }
 
 MU_TEST(sub_tests)
@@ -156,6 +191,22 @@ MU_TEST(mult_tests)
     BigInt_free(res);
 }
 
+MU_TEST(div_by_2_tests)
+{
+    BigInt *a, *res;
+
+    a = read_from_str("1234");
+    res = div_by_2(a);
+    mu_assert_string_eq("617", to_str(res));
+
+    a = read_from_str("1235");
+    res = div_by_2(a);
+    mu_assert_string_eq("617", to_str(res));
+
+    BigInt_free(a);
+    BigInt_free(res);
+}
+
 MU_TEST(division_tests)
 {
     BigInt *a, *b, *res;
@@ -164,6 +215,11 @@ MU_TEST(division_tests)
     b = read_from_str("11111");
     res = division(a, b);
     mu_assert_string_eq("1", to_str(res));
+
+    a = read_from_str("12345678");
+    b = read_from_str("123");
+    res = division(a, b);
+    mu_assert_string_eq("100371", to_str(res));
 
     a = read_from_str("-12345");
     b = read_from_str("11111");
@@ -186,10 +242,14 @@ int main()
 {
     MU_RUN_TEST(str_tests);
     MU_RUN_TEST(length_tests);
-    MU_RUN_TEST(sum_tests);
     MU_RUN_TEST(normalize_tests);
+    MU_RUN_TEST(read_from_int_tests);
+    MU_RUN_TEST(to_int_tests);
+    MU_RUN_TEST(sum_tests);
     MU_RUN_TEST(sub_tests);
     MU_RUN_TEST(mult_tests);
+    MU_RUN_TEST(div_by_2_tests);
+    MU_RUN_TEST(division_tests);
 
     MU_REPORT();
 
