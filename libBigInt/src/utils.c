@@ -34,14 +34,19 @@ size_t max_size(const BigInt *a, const BigInt *b)
 }
 BigInt *get_cp_abs(const BigInt *a)
 {
-    BigInt *res = read_from_str(to_str(a));
+    BigInt *res = get_cp(a);
     res->sign = 1;
     return res;
 }
 
 BigInt *get_cp(const BigInt *a)
 {
-    BigInt *res = read_from_str(to_str(a));
+    BigInt *res = BigInt_init(a->n);
+    res->sign = a->sign;
+    for (int i = 0; i < res->n; i++)
+    {
+        res->digits[i] = a->digits[i];
+    }
     return res;
 }
 int is_bigger(const BigInt *a, const BigInt *b)
