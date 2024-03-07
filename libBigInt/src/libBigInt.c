@@ -122,7 +122,7 @@ BigInt *subtraction(const BigInt *a, const BigInt *b)
         BigInt *res = subtraction(b, a);
         res->sign = -1;
         return res;
-    } 
+    }
     if (a->sign == 1 && b->sign == -1)
     {
         return addition(a, get_cp_abs(b));
@@ -152,6 +152,8 @@ BigInt *multiplication(const BigInt *a, const BigInt *b)
             car = res->digits[i + j] / 10;
             res->digits[i + j] %= 10;
         }
+        res->digits[i + b->n] += car;
+        car = 0;
     }
     normalize(res);
     res->sign = a->sign * b->sign;
@@ -160,7 +162,7 @@ BigInt *multiplication(const BigInt *a, const BigInt *b)
 }
 BigInt *division(const BigInt *a_org, const BigInt *b_org)
 {
-    BigInt *a  = get_cp_abs(a_org);
+    BigInt *a = get_cp_abs(a_org);
     BigInt *b = get_cp_abs(b_org);
 
     if (is_bigger(b, a))

@@ -186,6 +186,11 @@ MU_TEST(mult_tests)
     res = multiplication(a, b);
     mu_assert_string_eq("1518435", to_str(res));
 
+    a = read_from_str("999");
+    b = read_from_str("999");
+    res = multiplication(a, b);
+    mu_assert_string_eq("998001", to_str(res));
+
     BigInt_free(a);
     BigInt_free(b);
     BigInt_free(res);
@@ -230,7 +235,6 @@ MU_TEST(division_tests)
     b = read_from_str("-11111");
     res = division(a, b);
     mu_assert_string_eq("1", to_str(res));
-
 
 
     BigInt_free(a);
