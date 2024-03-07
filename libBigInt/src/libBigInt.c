@@ -56,11 +56,17 @@ BigInt *addition(const BigInt *a, const BigInt *b)
     {
         if (a->sign == -1)
         {
-            return subtraction(b, get_cp_abs(a));
+            BigInt *a_abs = get_cp_abs(a);
+            BigInt* res = subtraction(b, a_abs);
+            BigInt_free(a_abs);
+            return res;
         }
         else
         {
-            return (subtraction(a, get_cp_abs(b)));
+            BigInt *b_abs = get_cp_abs(b);
+            BigInt* res = subtraction(a, b_abs);
+            BigInt_free(b_abs);
+            return res;
         }
     }
 }
@@ -109,17 +115,29 @@ BigInt *subtraction(const BigInt *a, const BigInt *b)
     }
     if (a->sign == 1 && b->sign == -1)
     {
-        return addition(a, get_cp_abs(b));
+        BigInt *b_abs = get_cp_abs(b);
+        BigInt* res = addition(a, b_abs);
+        BigInt_free(b_abs);
+        return res;
     }
     if (a->sign == -1 && b->sign == 1)
     {
-        BigInt *res = addition(get_cp_abs(a), get_cp_abs(b));
+        BigInt *a_abs = get_cp_abs(a);
+        BigInt *b_abs = get_cp_abs(b);
+        BigInt *res = addition(a_abs, b_abs);
         res->sign = -1;
+        BigInt_free(a_abs);
+        BigInt_free(b_abs);
         return res;
     }
     if (a->sign == -1 && b->sign == -1)
     {
-        return subtraction(get_cp_abs(b), get_cp_abs(a));
+        BigInt* a_abs = get_cp_abs(a);
+        BigInt* b_abs = get_cp_abs(b);
+        BigInt* res = subtraction(b_abs,a_abs);
+        BigInt_free(a_abs);
+        BigInt_free(b_abs);
+        return res;
     }
     return NULL;
 }
@@ -231,7 +249,7 @@ char *to_str(const BigInt *a)
 {
     if (a->sign == 0)
     {
-        char* zero = malloc(2);
+        char *zero = malloc(2);
         zero[0] = '0';
         zero[1] = '\0';
         return zero;
