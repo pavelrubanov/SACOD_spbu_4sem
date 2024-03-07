@@ -12,7 +12,6 @@ typedef struct
     char sign;
 } BigInt;
 
-BigInt *BigInt_init(size_t);
 void BigInt_free(BigInt *);
 BigInt *addition(const BigInt *, const BigInt *);
 BigInt *subtraction(const BigInt *, const BigInt *);

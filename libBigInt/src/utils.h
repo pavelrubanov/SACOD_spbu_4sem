@@ -3,6 +3,7 @@
 
 #include "libBigInt.h"
 
+BigInt *BigInt_init(size_t);
 char *strrev(char *str);
 void normalize(BigInt *);
 int is_zero(const BigInt *);

@@ -1,5 +1,22 @@
 #include "utils.h"
 
+BigInt *BigInt_init(size_t size)
+{
+    BigInt *num = malloc(sizeof(BigInt));
+    if (num)
+    {
+        num->digits = malloc(sizeof(char) * (size + 1));
+        num->n = size;
+        num->sign = 0;
+        for (int i = 0; i < size; i++)
+        {
+            num->digits[i] = 0;
+        }
+        num->digits[size] = '\0';
+    }
+    return num;
+}
+
 void normalize(BigInt *num)
 {
     int new_len = num->n;
