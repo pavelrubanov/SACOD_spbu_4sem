@@ -57,14 +57,14 @@ BigInt *addition(const BigInt *a, const BigInt *b)
         if (a->sign == -1)
         {
             BigInt *a_abs = get_cp_abs(a);
-            BigInt* res = subtraction(b, a_abs);
+            BigInt *res = subtraction(b, a_abs);
             BigInt_free(a_abs);
             return res;
         }
         else
         {
             BigInt *b_abs = get_cp_abs(b);
-            BigInt* res = subtraction(a, b_abs);
+            BigInt *res = subtraction(a, b_abs);
             BigInt_free(b_abs);
             return res;
         }
@@ -116,7 +116,7 @@ BigInt *subtraction(const BigInt *a, const BigInt *b)
     if (a->sign == 1 && b->sign == -1)
     {
         BigInt *b_abs = get_cp_abs(b);
-        BigInt* res = addition(a, b_abs);
+        BigInt *res = addition(a, b_abs);
         BigInt_free(b_abs);
         return res;
     }
@@ -132,9 +132,9 @@ BigInt *subtraction(const BigInt *a, const BigInt *b)
     }
     if (a->sign == -1 && b->sign == -1)
     {
-        BigInt* a_abs = get_cp_abs(a);
-        BigInt* b_abs = get_cp_abs(b);
-        BigInt* res = subtraction(b_abs,a_abs);
+        BigInt *a_abs = get_cp_abs(a);
+        BigInt *b_abs = get_cp_abs(b);
+        BigInt *res = subtraction(b_abs, a_abs);
         BigInt_free(a_abs);
         BigInt_free(b_abs);
         return res;
@@ -175,10 +175,15 @@ BigInt *division(const BigInt *a_org, const BigInt *b_org)
     BigInt *res = BigInt_init(max_size(a, b));
     res->sign = a_org->sign * b_org->sign;
 
+    BigInt *ten = read_from_int(10);
     BigInt *car = zero();
     for (int i = a->n - 1; i >= 0; i--)
     {
-        car = addition(multiplication(car, read_from_int(10)), read_from_int(a->digits[i]));
+        BigInt *tmp1 = multiplication(car, ten);
+        BigInt *a_dig = read_from_int(a->digits[i]);
+        car = addition(tmp1, a_dig);
+        BigInt_free(tmp1);
+        BigInt_free(a_dig);
 
         int dig = 0;
         while (is_bigger(car, b))
@@ -189,6 +194,10 @@ BigInt *division(const BigInt *a_org, const BigInt *b_org)
 
         res->digits[i] = dig;
     }
+    BigInt_free(ten);
+    BigInt_free(a);
+    BigInt_free(b);
+    BigInt_free(car);
 
     normalize(res);
     return res;

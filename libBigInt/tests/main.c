@@ -170,27 +170,33 @@ MU_TEST(sub_tests)
 MU_TEST(mult_tests)
 {
     BigInt *a, *b, *res;
+    char *str_res;
 
     a = read_from_str("12345");
     b = read_from_str("123");
     res = multiplication(a, b);
-    mu_assert_string_eq("1518435", to_str(res));
+    str_res = to_str(res);
+    mu_assert_string_eq("1518435", str_res);
 
     a = read_from_str("-12345");
     b = read_from_str("123");
     res = multiplication(a, b);
-    mu_assert_string_eq("-1518435", to_str(res));
+    str_res = to_str(res);
+    mu_assert_string_eq("-1518435", str_res);
 
     a = read_from_str("-12345");
     b = read_from_str("-123");
     res = multiplication(a, b);
-    mu_assert_string_eq("1518435", to_str(res));
+    str_res = to_str(res);
+    mu_assert_string_eq("1518435", str_res);
 
     a = read_from_str("999");
     b = read_from_str("999");
     res = multiplication(a, b);
-    mu_assert_string_eq("998001", to_str(res));
+    str_res = to_str(res);
+    mu_assert_string_eq("998001", str_res);
 
+    free(str_res);
     BigInt_free(a);
     BigInt_free(b);
     BigInt_free(res);
@@ -236,7 +242,6 @@ MU_TEST(division_tests)
     res = division(a, b);
     mu_assert_string_eq("1", to_str(res));
 
-
     BigInt_free(a);
     BigInt_free(b);
     BigInt_free(res);
@@ -265,7 +270,7 @@ void test(BigInt *a)
     printf("\nn: %ld\n", a->n);
     printf("sign: %d\n", a->sign);
     printf("strlen: %ld\n", strlen(a->digits));
-    for(int i = 0; i < a->n; i++)
+    for (int i = 0; i < a->n; i++)
     {
         printf("%d ", a->digits[i]);
     }
