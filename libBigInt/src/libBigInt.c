@@ -2,7 +2,6 @@
 #include "libBigInt.h"
 #include "utils.h"
 
-
 void BigInt_free(BigInt *num)
 {
     free(num->digits);
@@ -204,30 +203,27 @@ BigInt *modulo(const BigInt *a, const BigInt *b)
 }
 BigInt *read_from_str(char *str)
 {
-    BigInt *res;
-    size_t size = strlen(str);
-    size_t last_el = size;
+    char *p = str;
     char sign;
     if (str[0] == '-')
     {
         sign = -1;
-        size--;
+        p++;
     }
     else
     {
         sign = 1;
     }
 
+    size_t size = strlen(p);
+    BigInt *res;
     res = BigInt_init(size);
     res->sign = sign;
     res->n = size;
-    // TODO realloc
     for (int i = 0; i < res->n; i++)
     {
-        res->digits[i] = str[last_el - 1 - i] - '0';
+        res->digits[i] = p[res->n - 1 - i] - '0';
     }
-
-    res->digits[res->n] = '\0';
     normalize(res);
     return res;
 }
@@ -235,9 +231,13 @@ char *to_str(const BigInt *a)
 {
     if (a->sign == 0)
     {
-        return "0";
+        char* zero = malloc(2);
+        zero[0] = '0';
+        zero[1] = '\0';
+        return zero;
     }
-    char *str = malloc(sizeof(char) * a->n);
+
+    char *str = malloc(sizeof(char) * (a->n + 1));
     for (int i = 0; i < a->n; i++)
     {
         str[i] = a->digits[a->n - i - 1] + '0';
@@ -245,9 +245,8 @@ char *to_str(const BigInt *a)
     str[a->n] = '\0';
     if (a->sign == -1)
     {
-        size_t len = a->n;
-        str = realloc(str, (len + 1) * sizeof(char));
-        memmove(str + 1, str, len + 1);
+        str = realloc(str, (a->n + 2) * sizeof(char));
+        memmove(str + 1, str, a->n + 1);
         str[0] = '-';
     }
 
