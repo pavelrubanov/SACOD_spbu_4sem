@@ -1,4 +1,5 @@
 test
+*.sh
 
 .vscode/*
 !.vscode/settings.json
