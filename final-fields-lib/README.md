@@ -3,10 +3,13 @@
 ### Окружение:
 1) `g++`
 2) `cmake`
+3) `make`
 
 ### Для сборки:
 1) `cd build`
-2) `cmake .`
+2) `cmake ..`
+3) `make`
 
 ### Для запсука тестов:
-1) `ctest .`
+1) `make tests`
+2) `./tests`
