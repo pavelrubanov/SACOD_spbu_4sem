@@ -4,6 +4,7 @@ project(ff-lib)
 
 add_library(fflib SHARED
     src/fflib.c
+    src/polynom.c
 )
 
 add_executable(tests
