@@ -11,7 +11,7 @@ MU_TEST(pol_tests)
     int8_t coef2[] = {1, 2};
 
     pol *p1 = pol_init(3, &coef1, 3);
-    pol *p2 = pol_init(2, &coef2, 2);
+    pol *p2 = pol_init(3, &coef2, 2);
 
     mu_assert_int_eq(1, p1->coef[0]);
     mu_assert_int_eq(2, p1->coef[1]);
