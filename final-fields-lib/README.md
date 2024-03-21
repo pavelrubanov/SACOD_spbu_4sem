@@ -12,4 +12,4 @@
 
 ### Для запсука тестов:
 1) `make tests`
-2) `./tests`
+2) `./fflib_tests`

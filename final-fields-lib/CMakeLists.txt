@@ -1,21 +1,20 @@
-cmake_minimum_required(VERSION 3.22)
-
-project(ff-lib)
-
-add_library(fflib SHARED
-    src/fflib.c
-    src/polynom.c
-)
-
-add_executable(tests
-    tests/main.c
-)
-
-target_link_libraries(tests fflib)
-
-target_compile_options(tests PUBLIC -Wall -g)
+cmake_minimum_required(VERSION 3.7)
 
 enable_testing()
-add_test(NAME fflib_tests COMMAND tests)
 
-add_custom_target(memcheck COMMAND valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./tests DEPENDS tests)
+project (fflib)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+
+add_library(fflib src/fflib.c 
+                  src/utils.c)
+
+target_include_directories(fflib PUBLIC ${PROJECT_SOURCE_DIR}/src)
+
+add_executable(fflib_tests tests/main.c)
+
+target_include_directories(fflib_tests PRIVATE ${PROJECT_SOURCE_DIR}/tests)
+target_link_libraries(fflib_tests fflib)
+
+add_test(NAME fflib COMMAND fflib_tests)
+
