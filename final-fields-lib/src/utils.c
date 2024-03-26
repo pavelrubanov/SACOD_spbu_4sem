@@ -43,9 +43,8 @@ ff_el *ff_el_cp(const ff_el *f)
     if (result == NULL)
         return NULL;
 
-    for (size_t i = 0; i < ff->n; i++)
-        result->dig[i] = f->dig[i];
-
+    memcpy(result->dig, f->dig, ff->n);
+    
     return result;
 }
 

@@ -32,6 +32,8 @@ void ff_free(ff *a);
 ff_el *ff_zero(const ff *a);
 ff_el *ff_identity(const ff *a);
 
+
+// only for normolized polynoms!!!!!
 ff_el *ff_el_from_arr(const ff *a, const uint8_t *p);
 
 ff_el *ff_el_uint8(uint8_t a);

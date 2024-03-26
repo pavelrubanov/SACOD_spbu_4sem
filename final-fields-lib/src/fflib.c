@@ -91,8 +91,8 @@ ff_el *ff_el_from_arr(const ff *a, const uint8_t *p)
     ff_el *result = ff_el_init(a);
     if (result == NULL)
         return NULL;
-    for (size_t i = 0; i < a->n; i++)
-        result->dig[i] = p[i];
+    
+    memcpy(result->dig, p, a->n);
 
     return result;
 }
