@@ -4,6 +4,7 @@
 
 void BigInt_free(BigInt *num)
 {
+
     free(num->digits);
     free(num);
 }
@@ -169,6 +170,8 @@ BigInt *division(const BigInt *a_org, const BigInt *b_org)
 
     if (is_bigger(b, a))
     {
+        BigInt_free(a);
+        BigInt_free(b);
         return zero();
     }
 
@@ -181,6 +184,7 @@ BigInt *division(const BigInt *a_org, const BigInt *b_org)
     {
         BigInt *tmp1 = multiplication(car, ten);
         BigInt *a_dig = read_from_int(a->digits[i]);
+        BigInt_free(car);
         car = addition(tmp1, a_dig);
         BigInt_free(tmp1);
         BigInt_free(a_dig);
@@ -188,7 +192,9 @@ BigInt *division(const BigInt *a_org, const BigInt *b_org)
         int dig = 0;
         while (is_bigger(car, b))
         {
-            car = subtraction(car, b);
+            BigInt *new_car = subtraction(car, b);
+            BigInt_free(car);
+            car = new_car;
             dig++;
         }
 
@@ -202,31 +208,14 @@ BigInt *division(const BigInt *a_org, const BigInt *b_org)
     normalize(res);
     return res;
 }
-BigInt *div_by_2(const BigInt *a)
-{
-    BigInt *res = BigInt_init(a->n);
-    if (a->sign == 0)
-    {
-        return res;
-    }
-    int car = 0;
-    for (int i = a->n - 1; i >= 0; i--)
-    {
-        int dig = car * 10 + a->digits[i];
-        car = dig % 2;
-        res->digits[i] = dig / 2;
-    }
-    if (res->digits[a->n - 1] == 0)
-    {
-        res->digits[res->n] = '\0';
-        res->n--;
-    }
-    res->sign = 1;
-    return res;
-}
 BigInt *modulo(const BigInt *a, const BigInt *b)
 {
-    return subtraction(a, multiplication(division(a, b), b));
+    BigInt* div = division(a, b);
+    BigInt* mult  = multiplication(div, b);
+    BigInt* res = subtraction(a, mult);
+    BigInt_free(div);
+    BigInt_free(mult);
+    return res;
 }
 BigInt *read_from_str(char *str)
 {
@@ -243,8 +232,7 @@ BigInt *read_from_str(char *str)
     }
 
     size_t size = strlen(p);
-    BigInt *res;
-    res = BigInt_init(size);
+    BigInt *res = BigInt_init(size);
     res->sign = sign;
     res->n = size;
     for (int i = 0; i < res->n; i++)

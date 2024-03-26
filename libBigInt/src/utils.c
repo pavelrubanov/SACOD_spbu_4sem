@@ -5,11 +5,10 @@ BigInt *BigInt_init(size_t size)
     BigInt *num = malloc(sizeof(BigInt));
     if (num)
     {
-        num->digits = malloc(sizeof(char) * (size + 1));
+        num->digits = malloc(sizeof(char) * (size));
         num->n = size;
         num->sign = 0;
         memset(num->digits, 0, num->n);
-        num->digits[size] = '\0';
     }
     return num;
 }
@@ -28,8 +27,7 @@ void normalize(BigInt *num)
         num->sign = 0;
     }
 
-    num->digits = realloc(num->digits, sizeof(char) * (new_len + 1));
-    num->digits[new_len] = '\0';
+    num->digits = realloc(num->digits, sizeof(char) * (new_len));
 }
 BigInt *zero()
 {
